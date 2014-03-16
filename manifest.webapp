@@ -1,0 +1,14 @@
+{
+  "name": "Roller Ball",
+  "description": "A simple game in which you move a ball through a labyrinth in order to make it fall into a hole and get access to the next level.",
+  "launch_path": "/mdn/rolling-ball/public_html/",
+  "icons": {
+    "128": "/mdn/rolling-ball/public_html/img/icon-128.png"
+  },
+  "developer": {
+    "name": "Francesco Iovine",
+    "url": "http://www.francesco.iovine.name"
+  },
+  "default_locale": "en",
+  "orientation": "portrait"
+}
