@@ -23,13 +23,13 @@ function init() {
 
     /* Add devicemotion control */
     window.mDeviceMotionControl = new DeviceMotionControl();
-    window.mDeviceMotionControl.lockOrientation('landscape');
+    window.mDeviceMotionControl.lockOrientation('portrait');
 
     /* Add keyboard control */
     window.mKeyboardControl = new KeyboardControl();
 
     /* Start the game */
-    window.mGame.start();
+    window.mGame.start();    
 }
 
 /* Call init() when the window is loaded */
