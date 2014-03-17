@@ -1,5 +1,5 @@
 
-function ScreenOrientationControl() {
+function ScreenOrientationManager() {
     
     /* Initialize screen.lockOrientation and screen.unlockOrientation taking into account vendor prefixes */
     screen.lockOrientation = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
@@ -7,7 +7,7 @@ function ScreenOrientationControl() {
     
 }
 
-ScreenOrientationControl.prototype = {
+ScreenOrientationManager.prototype = {
     /*
      * lockOrientation
      * lock the orientation to the value specified as parameter
