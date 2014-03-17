@@ -21,9 +21,12 @@ function init() {
         yPos: window.mGame.playground.height - 30
     });
 
+    /* Lock screen orientation to portrait */
+    window.mScreenOrientationControl = new ScreenOrientationControl();
+    window.mScreenOrientationControl.lockOrientation('portrait-primary');
+
     /* Add devicemotion control */
     window.mDeviceMotionControl = new DeviceMotionControl();
-    window.mDeviceMotionControl.lockOrientation('portrait');
 
     /* Add keyboard control */
     window.mKeyboardControl = new KeyboardControl();
@@ -31,6 +34,7 @@ function init() {
     /* Start the game */
     window.mGame.start();    
 }
+
 
 /* Call init() when the window is loaded */
 window.onload = init;

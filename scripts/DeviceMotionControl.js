@@ -3,24 +3,11 @@ function DeviceMotionControl() {
 
 DeviceMotionControl.prototype = {
     /*
-     * isDeviceOrientationEventSupported
-     * Check if the deviceorientation event is supported
-     * @returns {Boolean}
-     */
-    isDeviceOrientationEventSupported: function() {
-        if (window.DeviceOrientationEvent) {
-            return true;
-        }
-
-        return false;
-    },
-    /*
      * isDeviceMotionEventSupported
      * Check if the devicemotion event is supported
      * @returns {Boolean}
      */
     isDeviceMotionEventSupported: function() {
-        console.log(window.DeviceMotionEvent);
         if (window.DeviceMotionEvent) {
             return true;
         }
@@ -58,16 +45,6 @@ DeviceMotionControl.prototype = {
                 callback(x, y, z, interval);
 
             }, true);
-        }
-    },
-    /*
-     * lockOrientation
-     * lock the orientation to the value specified as parameter
-     * @param {String} orientation
-     */
-    lockOrientation: function(orientation) {
-        if (screen.lockOrientation) {
-            screen.lockOrientation(orientation);
         }
     }
 };

@@ -1,5 +1,5 @@
 {
-  "name": "Roller Ball",
+  "name": "Rolling Ball",
   "description": "A simple game in which you move a ball through a labyrinth in order to make it fall into a hole and get access to the next level.",
   "launch_path": "/mdn/rolling-ball/public_html/",
   "icons": {
@@ -10,5 +10,5 @@
     "url": "http://www.francesco.iovine.name"
   },
   "default_locale": "en",
-  "orientation": "portrait"
+  "orientation": "portrait-primary"
 }
