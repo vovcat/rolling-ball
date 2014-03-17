@@ -1,7 +1,4 @@
 
-window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
-        window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
-
 function Game() {
     this.status = 'stopped';
     this.level = 1;
@@ -12,6 +9,11 @@ function Game() {
     this.playground.setAttribute('height', window.innerHeight);
 
     this.playgroundContext = this.playground.getContext("2d");
+
+    /* Initialize window.requestAnimationFrame taking into account vendor prefixes */
+    window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+            window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+
 }
 
 Game.prototype = {
@@ -22,7 +24,7 @@ Game.prototype = {
     start: function() {
         /* Clear the playground */
         this.clearPlayground();
-        
+
         /* Draw toy pieces */
         window.mBoundaries.draw();
         this.generateBricks();
@@ -165,7 +167,7 @@ Game.prototype = {
             var height = (Math.random() - 0 + 1) * 100 * window.mBoundaries.height / 320;
             var top = Math.random() * (window.mBoundaries.height - height) + window.mBoundaries.margin;
             var left = Math.random() * (window.mBoundaries.width - width) + window.mBoundaries.margin;
-            
+
             window.mBricks.items.push({
                 top: top,
                 left: left,
@@ -180,7 +182,7 @@ Game.prototype = {
             var height = 20;
             var top = Math.random() * (window.mBoundaries.height - height) + window.mBoundaries.margin;
             var left = Math.random() * (window.mBoundaries.width - width) + window.mBoundaries.margin;
-            
+
             window.mBricks.items.push({
                 top: top,
                 left: left,
