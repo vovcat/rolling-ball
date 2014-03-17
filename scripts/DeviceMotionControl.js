@@ -16,7 +16,7 @@ DeviceMotionControl.prototype = {
     },
     /*
      * handleMotionEvent
-     * Listen for the devicemotion event and invoke the callback function every time the event is fired
+     * Listen to the devicemotion event and invoke the callback function every time the event is fired
      * @param {Function} callback
      */
     handleMotionEvent: function(callback) {

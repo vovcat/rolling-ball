@@ -141,18 +141,24 @@ Ball.prototype = {
      * Make the ball fall into the hole
      */
     fall: function(x, y) {
-        this.size -= 1;
+        /* Update ball status */
         this.status = 'falling';
-
+        
+        /* Update ball position */
         this.position.x = x;
         this.position.y = y;
 
+        /* Decrease ball size */
+        this.size -= 1;
+
+        /* Repaint */
         window.mGame.clearPlayground();
         window.mTarget.draw();
 //        window.mBoundaries.draw();
 //        window.mBricks.draw();
         this.draw();
 
+        /* Animate until the ball is visible */
         if (this.size > 0) {
             window.requestAnimationFrame(function() {
                 window.mBall.fall(x, y);
