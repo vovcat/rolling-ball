@@ -4,7 +4,10 @@ Rolling Ball is a simple game in which you move a ball through a labyrinth in or
 
 ![Screenshot](http://www.francesco.iovine.name/mdn/rolling-ball/public_html/img/screenshots/rolling-ball.png)
 
-Try it [live](http://goo.gl/NUfKQi).
+Try it [live](http://goo.gl/NUfKQi):
+
+- keyboard control: use arrows to make the ball roll, and space to make it jump
+- device motion control: change the orientation of your mobile device to make the ball roll, and move it up to make the ball jump
 
 ## Notes
 
@@ -14,6 +17,7 @@ This demo is part of [this MDN page](https://developer.mozilla.org/en-US/Apps/Bu
 
 ## Contributing
 
+- landscape support
 - levels
 - better look&feel
 - better playability
