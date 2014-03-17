@@ -31,16 +31,32 @@ DeviceMotionControl.prototype = {
      * handleMotionEvent
      * Listen for the devicemotion event and invoke the callback function every time the event is fired
      * @param {Function} callback
-     * @returns {Boolean}
      */
     handleMotionEvent: function(callback) {
+        
+        /* In Safari for iOS the direction are reversed on axes x and y */
+        var implementationFix = 1;
+        if (window.navigator.userAgent.match(/^.*(iPhone|iPad).*(OS\s[0-9]).*(CriOS|Version)\/[.0-9]*\sMobile.*$/i)) {
+            implementationFix = -1;
+        }
+
+        /* Check whether the DeviceMotionEvent is supported */
         if (this.isDeviceMotionEventSupported()) {
+
             /* Add a listener for the devicemotion event */
-            window.addEventListener('devicemotion', function(deviceOrientationEvent) {
-                callback(deviceOrientationEvent.accelerationIncludingGravity.x, // acceleration on the x axis without the effect of gravity
-                        deviceOrientationEvent.accelerationIncludingGravity.y, // acceleration on the y axis without the effect of gravity
-                        deviceOrientationEvent.accelerationIncludingGravity.z, // acceleration on the z axis without the effect of gravity
-                        deviceOrientationEvent.interval); // interval (expressed in ms) at which data is obtained from the underlying hardware
+            window.addEventListener('devicemotion', function(deviceMotionEvent) {
+
+                /* Get acceleration on x, y and z axis */
+                var x = deviceMotionEvent.accelerationIncludingGravity.x * implementationFix;
+                var y = deviceMotionEvent.accelerationIncludingGravity.y * implementationFix;
+                var z = deviceMotionEvent.accelerationIncludingGravity.z;
+
+                /* Get the interval (ms) at which data is obtained from the underlying hardware */
+                var interval = deviceMotionEvent.interval;
+
+                /* Invoke the callback function */
+                callback(x, y, z, interval);
+
             }, true);
         }
     },
