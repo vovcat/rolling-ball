@@ -33,7 +33,7 @@ var CollisionManager = {
         for (var i = 0; i < bricks.length; i++) {
 
             var leftCollision = bricks[i].left - (window.mBall.size / 2);
-            var topCollision = bricks[i].top - (window.mBall.size / 2);
+            var topCollision = bricks[i].top - 0 - (window.mBall.size / 2);
             var rightCollision = bricks[i].left - 0 + bricks[i].width - 0 + (window.mBall.size / 2);
             var bottomCollision = bricks[i].top - 0 + bricks[i].height - 0 + (window.mBall.size / 2);
 
@@ -73,18 +73,18 @@ var CollisionManager = {
         var ret = '';
 
         /* Boundaries */
-        if (y <= window.mBoundaries.top - 0 + window.mBall.size / 2) {
+        if (y <= (window.mBoundaries.top - 0 + (window.mBall.size / 2))) {
             ret += 'top';
         }
-        else if (y >= window.mBoundaries.height) {
+        else if (y >= (window.mBoundaries.height - 0 + window.mBoundaries.margin - (window.mBall.size / 2))) {
             ret += 'bottom';
         }
 
-        if (x <= window.mBoundaries.left - 0 + window.mBall.size / 2) {
-            ret += 'right';
-        }
-        else if (x >= window.mBoundaries.width) {
+        if (x <= (window.mBoundaries.left + (window.mBall.size / 2))) {
             ret += 'left';
+        }
+        else if (x >= (window.mBoundaries.width - 0 + window.mBoundaries.margin - (window.mBall.size / 2))) {
+            ret += 'right';
         }
 
         if (ret !== '') {

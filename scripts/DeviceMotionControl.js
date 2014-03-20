@@ -1,7 +1,25 @@
+/*
+ * 
+ * Device Orientation API
+ * http://www.w3.org/TR/orientation-event/
+ */
+
 function DeviceMotionControl() {
 }
 
 DeviceMotionControl.prototype = {
+    /*
+     * isDeviceMotionEventSupported
+     * Check if the devicemotion event is supported
+     * @returns {Boolean}
+     */
+    isDeviceOrientationEventSupported: function() {
+        if (window.DeviceOrientationEvent) {
+            return true;
+        }
+
+        return false;
+    },
     /*
      * isDeviceMotionEventSupported
      * Check if the devicemotion event is supported
@@ -20,10 +38,10 @@ DeviceMotionControl.prototype = {
      * @param {Function} callback
      */
     handleMotionEvent: function(callback) {
-        
+
         /* In Safari for iOS the direction are reversed on axes x and y */
         var implementationFix = 1;
-        if (window.navigator.userAgent.match(/^.*(iPhone|iPad).*(OS\s[0-9]).*(CriOS|Version)\/[.0-9]*\sMobile.*$/i)) {
+        if (window.navigator.userAgent.match(/^.*(iPhone|iPad).*(OS\s[0-9]).*(CriOS|Version)\/[.0-9]*\sMobile.*$/i)) { // is Mobile Safari
             implementationFix = -1;
         }
 
@@ -31,7 +49,7 @@ DeviceMotionControl.prototype = {
         if (this.isDeviceMotionEventSupported()) {
 
             /* Add a listener for the devicemotion event */
-            window.addEventListener('devicemotion', function(deviceMotionEvent) {
+            window.ondevicemotion = function(deviceMotionEvent) {
 
                 /* Get acceleration on x, y and z axis */
                 var x = deviceMotionEvent.accelerationIncludingGravity.x * implementationFix;
@@ -40,11 +58,39 @@ DeviceMotionControl.prototype = {
 
                 /* Get the interval (ms) at which data is obtained from the underlying hardware */
                 var interval = deviceMotionEvent.interval;
+                
+                /* Handle the screen orientation change */
+                window.mScreenOrientationManager.handleOrientation({
+                    portraitPrimaryCallback: function() {
+                        callback(-x, y, z, interval);
+                    },
+                    landscapePrimaryCallback: function() {
+                        callback(y, x, z, interval);
+                    },
+                    portraitSecondaryCallback: function() {
+                        callback(-y, -x, z, interval);
+                    },
+                    landscapeSecondaryCallback: function() {
+                        callback(x, -y, z, interval);
+                    }
+                });
 
-                /* Invoke the callback function */
-                callback(x, y, z, interval);
-
-            }, true);
+//                if (screenOrientation === 'portrait-primary' || window.orientation === 0) {
+//                    callback(-x, y, z, interval);
+//                }
+//                else if (screenOrientation === 'landscape-primary' || window.orientation === 90) {
+//                    callback(y, x, z, interval);
+//                }
+//                else if (screenOrientation === 'landscape-secondary' || window.orientation === -90) {
+//                    callback(-y, -x, z, interval);
+//                }
+//                else if (screenOrientation === 'portrait-secondary' || window.orientation === 180) {
+//                    callback(x, -y, z, interval);
+//                }
+            };
+        }
+        else {
+            alert('devicemotion event not supported');
         }
     }
 };

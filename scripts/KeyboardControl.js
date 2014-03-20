@@ -97,7 +97,7 @@ KeyboardControl.prototype = {
     goLeft: function() {
         var now = new Date();
 
-        this.vx = 1;
+        this.vx = -1;
 
         this.leftArrow.steps++;
         this.leftArrow.lastTimePressed = now;
@@ -139,7 +139,7 @@ KeyboardControl.prototype = {
             if (leftup >= 0 && leftup < this.interval) {
                 this.leftArrow.lastTimePressed = new Date();
                 this.upArrow.lastTimePressed = new Date();
-                this.vx = 1;
+                this.vx = -1;
             }
         }
         else if (this.rightArrow.lastTimePressed) {
@@ -147,7 +147,7 @@ KeyboardControl.prototype = {
             if (rightup >= 0 && rightup < this.interval) {
                 this.rightArrow.lastTimePressed = new Date();
                 this.upArrow.lastTimePressed = new Date();
-                this.vx = -1;
+                this.vx = 1;
             }
         }
 
@@ -160,7 +160,7 @@ KeyboardControl.prototype = {
     goRight: function() {
         var now = new Date();
 
-        this.vx = -1;
+        this.vx = 1;
 
         this.rightArrow.steps++;
         this.rightArrow.lastTimePressed = now;
@@ -201,7 +201,7 @@ KeyboardControl.prototype = {
             if (leftdown >= 0 && leftdown < this.interval) {
                 this.leftArrow.lastTimePressed = new Date();
                 this.downArrow.lastTimePressed = new Date();
-                this.vx = 1;
+                this.vx = -1;
             }
         }
         else if (this.rightArrow.lastTimePressed) {
@@ -209,7 +209,7 @@ KeyboardControl.prototype = {
             if (rightdown >= 0 && rightdown < this.interval) {
                 this.rightArrow.lastTimePressed = new Date();
                 this.downArrow.lastTimePressed = new Date();
-                this.vx = -1;
+                this.vx = 1;
             }
         }
 

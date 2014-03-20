@@ -1,15 +1,23 @@
-function Boundaries() {
-    this.margin = 10;
-    this.top = this.margin;
-    this.left = this.margin;
-    this.width = window.mGame.playground.width - 2 * this.margin;
-    this.height = window.mGame.playground.height - 2 * this.margin;
-    
-    /* Draw the boundaries */
-    this.draw();
+function Boundaries(settings) {
+    this.margin = settings.margin;
+
+    /* Initialize the boundaries */
+    this.init();
 }
 
 Boundaries.prototype = {
+    /*
+     * init
+     * Initialize the boundaries
+     */
+    init: function() {
+        this.top = this.margin;
+        this.left = this.margin;
+        this.width = window.mGame.playground.width - (2 * this.margin);
+        this.height = window.mGame.playground.height - (2 * this.margin);
+        
+        this.draw();
+    },
     /*
      * draw
      * Draw the boundaries

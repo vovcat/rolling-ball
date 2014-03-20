@@ -37,8 +37,12 @@ if (navigator.mozApps) {
 
         /* If the app is already installed */
         if (installCheck.result) {
+            
+//            alert('App already installed, please lauch it');
+//            installButton.style.display = 'none';
 
         } else { /* If not */
+            alert('Tap the screen to install the app');
 
             // install the app when the user clicks on the install button
             installButton.addEventListener('click', install, false);

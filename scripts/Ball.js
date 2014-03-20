@@ -30,7 +30,7 @@ Ball.prototype = {
     roll: function(motionX, motionY) {
 
         this.position.y += motionY;
-        this.position.x -= motionX;
+        this.position.x += motionX;
 
         window.mGame.clearPlayground();
         window.mTarget.draw();

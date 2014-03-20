@@ -1,13 +1,39 @@
 
+/*
+ * Screen Orientation API
+ * http://www.w3.org/TR/screen-orientation/
+ */
+
 function ScreenOrientationManager() {
-    
-    /* Initialize screen.lockOrientation and screen.unlockOrientation taking into account vendor prefixes */
+
+    /* Initialize screen properties taking into account vendor prefixes */
+    screen.orientation = screen.orientation || screen.mozOrientation || screen.msOrientation;
     screen.lockOrientation = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
     screen.unlockOrientation = screen.unlockOrientation || screen.mozUnlockOrientation || screen.msUnlockOrientation;
-    
+
 }
 
 ScreenOrientationManager.prototype = {
+    /*
+     * isScreenOrientationSupported
+     * Check if window.orientation property is supported
+     * @returns {Boolean}
+     */
+    isScreenOrientationSupported: function() {
+        if (screen.orientation) {
+            return true;
+        }
+
+        return false;
+    },
+    /*
+     * getOrientation
+     * get device orientation
+     * @returns {String} orientation
+     */
+    getOrientation: function() {
+        return screen.orientation || window.orientation;
+    },
     /*
      * lockOrientation
      * lock the orientation to the value specified as parameter
@@ -26,6 +52,73 @@ ScreenOrientationManager.prototype = {
     unlockOrientation: function() {
         if (screen.unlockOrientationFunction) {
             screen.unlockOrientationFunction();
+        }
+    },
+    /*
+     * handleOrientation
+     * handle screen orientation
+     * @param {Object} callbacks
+     */
+    handleOrientation: function(callbacks) {
+        var self = this;
+
+        /* Check the orientation and invoke the callback functions */
+        var screenOrientation = self.getOrientation();
+
+        if (screenOrientation || window.orientation) {
+            if (screenOrientation === 'portrait-primary' || screenOrientation === 0) {
+                if (callbacks.portraitPrimaryCallback) {
+                    callbacks.portraitPrimaryCallback();
+                }
+            }
+            else if (screenOrientation === 'landscape-primary' || screenOrientation === 90) {
+                if (callbacks.landscapePrimaryCallback) {
+                    callbacks.landscapePrimaryCallback();
+                }
+            }
+            else if (screenOrientation === 'landscape-secondary' || screenOrientation === -90) {
+                if (callbacks.portraitSecondaryCallback) {
+                    callbacks.portraitSecondaryCallback();
+                }
+            }
+            else if (screenOrientation === 'portrait-secondary' || screenOrientation === 180) {
+                if (callbacks.landscapeSecondaryCallback) {
+                    callbacks.landscapeSecondaryCallback();
+                }
+            }
+        }
+        else { // portrait-primary
+            if (callbacks.portraitPrimaryCallback) {
+                callbacks.portraitPrimaryCallback();
+            }
+        }
+    },
+    /*
+     * handleOrientationChange
+     * handle orientation change
+     * @param {Object} callbacks
+     */
+    handleOrientationChange: function(callbacks) {
+        var self = this;
+
+        /* if the OrientationChangeEvent is supported */
+        if (window.onorientationchange) {
+
+            /* Invoke handleOrientation on orientation change */
+            window.onorientationchange = function() {
+
+                self.handleOrientation(callbacks);
+
+            };
+        }
+        else { // fallback
+
+            /* Invoke handleOrientation on window resize */
+            window.onresize = function() {
+
+                self.handleOrientation(callbacks);
+
+            };
         }
     }
 };

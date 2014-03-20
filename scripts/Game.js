@@ -10,6 +10,9 @@ function Game() {
 
     this.playgroundContext = this.playground.getContext("2d");
 
+    this.lastMotionX = 0;
+    this.lastMotionY = 0;
+
     /* Initialize window.requestAnimationFrame taking into account vendor prefixes */
     window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
             window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
@@ -25,11 +28,22 @@ Game.prototype = {
         /* Clear the playground */
         this.clearPlayground();
 
+        this.playground.setAttribute('width', window.innerWidth);
+        this.playground.setAttribute('height', window.innerHeight);
+
         /* Draw toy pieces */
-        window.mBoundaries.draw();
-        this.generateBricks();
+        window.mBoundaries.init();
         this.generateTarget();
+        this.generateBricks();
         this.generateBall();
+
+        /* Handle the screen orientation change */
+        window.mScreenOrientationManager.handleOrientationChange({
+            portraitPrimaryCallback: window.mGame.start.bind(window.mGame),
+            landscapePrimaryCallback: window.mGame.start.bind(window.mGame),
+            portraitSecondaryCallback: window.mGame.start.bind(window.mGame),
+            landscapeSecondaryCallback: window.mGame.start.bind(window.mGame)
+        });
 
         /* Activate the device motion control */
         window.mDeviceMotionControl.handleMotionEvent(window.mGame.step.bind(window.mGame));
@@ -78,7 +92,7 @@ Game.prototype = {
         }
 
         /* Calculate the next position of the ball */
-        var nextPositionX = window.mBall.position.x - 0 - motionX;
+        var nextPositionX = window.mBall.position.x - 0 + motionX;
         var nextPositionY = window.mBall.position.y - 0 + motionY;
 
         /* Check if the ball reached the target */
@@ -92,19 +106,18 @@ Game.prototype = {
         /* Check if the ball collides with a brick or boundaries  */
         var collision = CollisionManager.bricks(nextPositionX, nextPositionY) || CollisionManager.boundaries(nextPositionX, nextPositionY);
         if (collision) {
-            if (collision === 'left' && motionX < 0) {
-                motionX = 0;
+            
+            if (collision === 'left' || collision === 'right') {
+                if ((motionX < 0 && this.lastMotionX < 0) || (motionX > 0 && this.lastMotionX > 0)) {
+                    motionX = 0;
+                }
             }
-            else if (collision === 'top' && motionY > 0) {
-                motionY = 0;
+            else if (collision === 'top' || collision === 'bottom') {
+                if ((motionY < 0 && this.lastMotionY < 0) || (motionY > 0 && this.lastMotionY > 0)) {
+                    motionY = 0;
+                }
             }
-            else if (collision === 'right' && motionX > 0) {
-                motionX = 0;
-            }
-            else if (collision === 'bottom' && motionY < 0) {
-                motionY = 0;
-            }
-            else {
+            else if (collision === 'topleft' || collision === 'topright' || collision === 'bottomleft' || collision === 'bottomright') {
                 return;
             }
         }
@@ -121,6 +134,14 @@ Game.prototype = {
         }
 
         window.mBall.roll(motionX, motionY);
+
+        /* Save last motion */
+        if (motionX !== 0) {
+            this.lastMotionX = motionX;
+        }
+        if (motionY !== 0) {
+            this.lastMotionY = motionY;
+        }
 
     },
     /*
@@ -165,8 +186,14 @@ Game.prototype = {
         for (var i = 0; i < numberOfVerticalWalls; i++) {
             var width = 20;
             var height = (Math.random() - 0 + 1) * 100 * window.mBoundaries.height / 320;
-            var top = Math.random() * (window.mBoundaries.height - height) + window.mBoundaries.margin;
-            var left = Math.random() * (window.mBoundaries.width - width) + window.mBoundaries.margin;
+
+            var topMax = window.mBoundaries.height - height + window.mBoundaries.top;
+            var topMin = window.mBoundaries.top;
+            var top = (Math.random() * (topMax - topMin)) - 0 + topMin;
+
+            var leftMax = window.mBoundaries.width - width + window.mBoundaries.left;
+            var leftMin = window.mBoundaries.left;
+            var left = (Math.random() * (leftMax - leftMin)) - 0 + leftMin;
 
             window.mBricks.items.push({
                 top: top,
@@ -180,8 +207,14 @@ Game.prototype = {
         for (var i = 0; i < numberOfHorizontalWalls; i++) {
             var width = (Math.random() - 0 + 1) * 100 * window.mBoundaries.width / 480;
             var height = 20;
-            var top = Math.random() * (window.mBoundaries.height - height) + window.mBoundaries.margin;
-            var left = Math.random() * (window.mBoundaries.width - width) + window.mBoundaries.margin;
+
+            var topMax = window.mBoundaries.height - height + window.mBoundaries.top;
+            var topMin = window.mBoundaries.top;
+            var top = (Math.random() * (topMax - topMin)) - 0 + topMin;
+
+            var leftMax = window.mBoundaries.width - width + window.mBoundaries.left;
+            var leftMin = window.mBoundaries.left;
+            var left = (Math.random() * (leftMax - leftMin)) - 0 + leftMin;
 
             window.mBricks.items.push({
                 top: top,
@@ -200,9 +233,15 @@ Game.prototype = {
     generateTarget: function() {
         var xPos, yPos;
 
+        var leftMax = window.mBoundaries.left - 0 + (window.mBoundaries.width / 2) - window.mTarget.size;
+        var leftMin = window.mBoundaries.left - 0 + window.mTarget.size;
+        
+        var topMax = window.mBoundaries.top - 0 + (window.mBoundaries.height / 2) - window.mTarget.size;
+        var topMin = window.mBoundaries.top - 0 + window.mTarget.size;
+                
         do {
-            xPos = Math.abs(Math.random() * window.mGame.playground.width - window.mBoundaries.top - window.mTarget.size);
-            yPos = Math.abs(Math.random() * window.mGame.playground.height - window.mBoundaries.left - window.mTarget.size);
+            xPos = (Math.random() * (leftMax - leftMin)) - 0 + leftMin;
+            yPos = (Math.random() * (topMax - topMin)) - 0 + topMin;
         }
         while (CollisionManager.bricks(xPos, yPos) || CollisionManager.boundaries(xPos, yPos));
 
@@ -219,9 +258,15 @@ Game.prototype = {
 
         var xPos, yPos;
 
+        var leftMax = window.mBoundaries.left - 0 + window.mBoundaries.width - window.mBall.size;
+        var leftMin = window.mBoundaries.left - 0 + (window.mBoundaries.width / 2);
+        
+        var topMax = window.mBoundaries.top - 0 + window.mBoundaries.height - window.mBall.size;
+        var topMin = window.mBoundaries.top - 0 + (window.mBoundaries.height / 2);
+                
         do {
-            xPos = Math.abs(Math.random() * this.playground.width - window.mBoundaries.top - window.mBall.size);
-            yPos = Math.abs(Math.random() * this.playground.height - window.mBoundaries.left - window.mBall.size);
+            xPos = (Math.random() * (leftMax - leftMin)) - 0 + leftMin;
+            yPos = (Math.random() * (topMax - topMin)) - 0 + topMin;
         }
         while (CollisionManager.bricks(xPos, yPos) || CollisionManager.boundaries(xPos, yPos)
                 || CollisionManager.target(xPos, yPos));

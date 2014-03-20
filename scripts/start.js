@@ -1,10 +1,13 @@
 
 function init() {
+        
     /* Create a new Game */
     window.mGame = new Game();
 
     /* Create new Boundaries and Bricks */
-    window.mBoundaries = new Boundaries();
+    window.mBoundaries = new Boundaries({
+        margin: 10        
+    });
     window.mBricks = new Bricks();
 
     /* Create a new Target */
@@ -32,7 +35,7 @@ function init() {
     window.mKeyboardControl = new KeyboardControl();
 
     /* Start the game */
-    window.mGame.start();    
+    window.mGame.start();
 }
 
 
