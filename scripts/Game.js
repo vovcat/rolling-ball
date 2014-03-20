@@ -60,16 +60,11 @@ Game.prototype = {
      * @param {Integer} interval
      */
     step: function(motionX, motionY, motionZ, interval) {
-
+        
         var self = this;
 
         /* Stop if the game is not running */
         if (this.status !== 'running') {
-            return;
-        }
-
-        /* Stop if ball is jumping */
-        if (window.mBall.status === 'jumping') {
             return;
         }
 
@@ -88,6 +83,11 @@ Game.prototype = {
             /* Make the ball jump */
             window.mBall.jump(jumpX, jumpY, motionZ);
 
+            return;
+        }
+
+        /* Stop if ball is not rolling */
+        if (window.mBall.status !== 'rolling') {
             return;
         }
 
@@ -187,12 +187,12 @@ Game.prototype = {
             var width = 20;
             var height = (Math.random() - 0 + 1) * 100 * window.mBoundaries.height / 320;
 
-            var topMax = window.mBoundaries.height - height + window.mBoundaries.top;
-            var topMin = window.mBoundaries.top;
+            var topMax = window.mBoundaries.height - height + window.mBoundaries.top - window.mTarget.size;
+            var topMin = window.mBoundaries.top - 0 + window.mTarget.size;
             var top = (Math.random() * (topMax - topMin)) - 0 + topMin;
 
-            var leftMax = window.mBoundaries.width - width + window.mBoundaries.left;
-            var leftMin = window.mBoundaries.left;
+            var leftMax = window.mBoundaries.width - width + window.mBoundaries.left - window.mBall.size;
+            var leftMin = window.mBoundaries.left - 0 + window.mBall.size;
             var left = (Math.random() * (leftMax - leftMin)) - 0 + leftMin;
 
             window.mBricks.items.push({
@@ -208,12 +208,12 @@ Game.prototype = {
             var width = (Math.random() - 0 + 1) * 100 * window.mBoundaries.width / 480;
             var height = 20;
 
-            var topMax = window.mBoundaries.height - height + window.mBoundaries.top;
-            var topMin = window.mBoundaries.top;
+            var topMax = window.mBoundaries.height - height + window.mBoundaries.top - window.mTarget.size;
+            var topMin = window.mBoundaries.top - 0 + window.mTarget.size;
             var top = (Math.random() * (topMax - topMin)) - 0 + topMin;
 
-            var leftMax = window.mBoundaries.width - width + window.mBoundaries.left;
-            var leftMin = window.mBoundaries.left;
+            var leftMax = window.mBoundaries.width - width + window.mBoundaries.left - window.mBall.size;
+            var leftMin = window.mBoundaries.left - 0 + window.mBall.size;
             var left = (Math.random() * (leftMax - leftMin)) - 0 + leftMin;
 
             window.mBricks.items.push({

@@ -1,7 +1,7 @@
 var CollisionManager = {
     /*
      * target
-     * Check whether the position passed as parameter is in the hole
+     * Check whether the ball should fall into hole
      * @param {Double} x
      * @param {Double} y
      * @returns {Boolean}
@@ -17,16 +17,44 @@ var CollisionManager = {
         return false;
     },
     /*
+     * boundaries
+     * Check whether the ball should crash against a boundary
+     * @param {Double} x
+     * @param {Double} y
+     * @returns {String} collision direction
+     */
+    boundaries: function(x, y) {
+        var ret = '';
+
+        /* Boundaries */
+        if (y <= (window.mBoundaries.top - 0 + (window.mBall.size / 2))) {
+            ret += 'top';
+        }
+        else if (y >= (window.mBoundaries.height - 0 + window.mBoundaries.margin - (window.mBall.size / 2))) {
+            ret += 'bottom';
+        }
+
+        if (x <= (window.mBoundaries.left + (window.mBall.size / 2))) {
+            ret += 'left';
+        }
+        else if (x >= (window.mBoundaries.width - 0 + window.mBoundaries.margin - (window.mBall.size / 2))) {
+            ret += 'right';
+        }
+
+        if (ret !== '') {
+            return ret;
+        }
+
+        return false;
+    },
+    /*
      * bricks
-     * Check whether the position passed as parameter collides with a brick
+     * Check whether the ball should crash against a brick
      * @param {Double} x
      * @param {Double} y
      * @returns {String} collision direction
      */
     bricks: function(x, y) {
-        if (window.mBall.status !== 'rolling') {
-            return false;
-        }
         
         var bricks = window.mBricks.items;
         
@@ -60,62 +88,6 @@ var CollisionManager = {
             }
         }
 
-        return false;
-    },
-    /*
-     * boundaries
-     * Check whether the position passed as parameter collides with a boundary
-     * @param {Double} x
-     * @param {Double} y
-     * @returns {String} collision direction
-     */
-    boundaries: function(x, y) {
-        var ret = '';
-
-        /* Boundaries */
-        if (y <= (window.mBoundaries.top - 0 + (window.mBall.size / 2))) {
-            ret += 'top';
-        }
-        else if (y >= (window.mBoundaries.height - 0 + window.mBoundaries.margin - (window.mBall.size / 2))) {
-            ret += 'bottom';
-        }
-
-        if (x <= (window.mBoundaries.left + (window.mBall.size / 2))) {
-            ret += 'left';
-        }
-        else if (x >= (window.mBoundaries.width - 0 + window.mBoundaries.margin - (window.mBall.size / 2))) {
-            ret += 'right';
-        }
-
-        if (ret !== '') {
-            return ret;
-        }
-
-        return false;
-    },
-    /*
-     * outofboundaries
-     * Check whether the position passed as parameter is out of the boundaries
-     * @param {Double} x
-     * @param {Double} y
-     * @returns {String} collision direction
-     */
-    outofboundaries: function(x, y) {
-        /* Boundaries */
-        if (x < window.mBoundaries.left) {
-            return 'left';
-        }
-        else if (x > window.mBoundaries.width - 0 + (window.mBall.size / 2)) {
-            return 'right';
-        }
-
-        if (y < window.mBoundaries.top) {
-            return 'top';
-        }
-        else if (y > window.mBoundaries.height - 0 + (window.mBall.size / 2)) {
-            return 'bottom';
-        }
-        
         return false;
     }
 };

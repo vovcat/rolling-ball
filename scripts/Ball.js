@@ -1,7 +1,7 @@
 function Ball(settings) {
     this.originalSize = settings.size;
     this.size = settings.size;
-    this.status = 'rolling';
+    this.status = 'rolling'; // rolling, jumping, crashing, onabrick, falling
     this.position = {
         x: settings.xPos,
         y: settings.yPos
@@ -44,10 +44,10 @@ Ball.prototype = {
      */
     jump: function(motionX, motionY, motionZ) {
 
-        var outofboundaries = CollisionManager.outofboundaries(this.position.x, this.position.y);
+        var outofboundaries = CollisionManager.boundaries(this.position.x, this.position.y);
         if (outofboundaries) {
             this.crash(outofboundaries);
-            window.mBall.land(motionX, motionY, motionZ);
+            this.land(motionX, motionY, motionZ);
             return;
         }
 
@@ -64,12 +64,13 @@ Ball.prototype = {
         this.draw();
 
         if (this.size - this.originalSize <= motionZ) {
+            var self = this;
             window.requestAnimationFrame(function() {
-                window.mBall.jump(motionX, motionY, motionZ);
+                self.jump(motionX, motionY, motionZ);
             });
         }
         else {
-            window.mBall.land(motionX, motionY, motionZ);
+            this.land(motionX, motionY, motionZ);
         }
     },
     /*
@@ -78,11 +79,9 @@ Ball.prototype = {
      */
     land: function(motionX, motionY) {
 
-        var outofboundaries = CollisionManager.outofboundaries(this.position.x, this.position.y);
+        var outofboundaries = CollisionManager.boundaries(this.position.x, this.position.y);
         if (outofboundaries) {
-            console.log(outofboundaries);
             this.crash(outofboundaries);
-//            return;
         }
 
         if (this.size > this.originalSize) {
@@ -100,22 +99,31 @@ Ball.prototype = {
             window.mBricks.draw();
             this.draw();
 
+            var self = this;
             window.requestAnimationFrame(function() {
-                window.mBall.land(motionX, motionY);
+                self.land(motionX, motionY);
             });
         }
         else {
             this.size = this.originalSize;
-            this.status = 'rolling';
+                        
             if (CollisionManager.target(this.position.x, this.position.y)) {
                 window.mGame.stop();
                 window.mGame.nextLevel();
                 return;
             }
+            
+            if (CollisionManager.bricks(this.position.x, this.position.y)) {
+                this.draw();
+                this.status = 'onabrick';
+                return;
+            }            
+            
+            this.status = 'rolling';
         }
     },
     /*
-     * land
+     * crash
      * Make the ball crash against boundaries
      */
     crash: function(outofboundaries) {
@@ -160,8 +168,9 @@ Ball.prototype = {
 
         /* Animate until the ball is visible */
         if (this.size > 0) {
+            var self = this;
             window.requestAnimationFrame(function() {
-                window.mBall.fall(x, y);
+                self.fall(x, y);
             });
         }
         else {
