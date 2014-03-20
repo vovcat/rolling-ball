@@ -42,7 +42,7 @@ if (navigator.mozApps) {
 //            installButton.style.display = 'none';
 
         } else { /* If not */
-            alert('Tap the screen to install the app');
+//            alert('Tap the screen to install the app');
 
             // install the app when the user clicks on the install button
             installButton.addEventListener('click', install, false);

@@ -74,23 +74,10 @@ DeviceMotionControl.prototype = {
                         callback(x, -y, z, interval);
                     }
                 });
-
-//                if (screenOrientation === 'portrait-primary' || window.orientation === 0) {
-//                    callback(-x, y, z, interval);
-//                }
-//                else if (screenOrientation === 'landscape-primary' || window.orientation === 90) {
-//                    callback(y, x, z, interval);
-//                }
-//                else if (screenOrientation === 'landscape-secondary' || window.orientation === -90) {
-//                    callback(-y, -x, z, interval);
-//                }
-//                else if (screenOrientation === 'portrait-secondary' || window.orientation === 180) {
-//                    callback(x, -y, z, interval);
-//                }
             };
         }
-        else {
-            alert('devicemotion event not supported');
-        }
+//        else {
+//            alert('devicemotion event not supported');
+//        }
     }
 };
