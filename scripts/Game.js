@@ -5,8 +5,8 @@ function Game() {
     this.speed = 1;
 
     this.playground = document.getElementById("playground");
-    this.playground.setAttribute('width', window.innerWidth);
-    this.playground.setAttribute('height', window.innerHeight);
+    this.playground.setAttribute('width', window.innerWidth - 5);
+    this.playground.setAttribute('height', window.innerHeight - 5);
 
     this.playgroundContext = this.playground.getContext("2d");
 
@@ -28,8 +28,8 @@ Game.prototype = {
         /* Clear the playground */
         this.clearPlayground();
 
-        this.playground.setAttribute('width', window.innerWidth);
-        this.playground.setAttribute('height', window.innerHeight);
+        this.playground.setAttribute('width', window.innerWidth - 5);
+        this.playground.setAttribute('height', window.innerHeight - 5);
 
         /* Draw toy pieces */
         window.mBoundaries.init();
