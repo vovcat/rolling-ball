@@ -1,11 +1,11 @@
-function Bricks() {
+function Obstacles() {
     this.items = [];
 }
 
-Bricks.prototype = {
+Obstacles.prototype = {
     /*
      * draw
-     * Draw the bricks
+     * Draw the obstacles
      */
     draw: function() {
         window.mGame.playgroundContext.fillStyle = '#721B1B';

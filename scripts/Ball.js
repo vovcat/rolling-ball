@@ -36,7 +36,7 @@ Ball.prototype = {
         window.mTarget.draw();
         this.draw();
         window.mBoundaries.draw();
-        window.mBricks.draw();
+        window.mObstacles.draw();
     },
     /*
      * jump
@@ -60,7 +60,7 @@ Ball.prototype = {
         window.mGame.clearPlayground();
         window.mTarget.draw();
         window.mBoundaries.draw();
-        window.mBricks.draw();
+        window.mObstacles.draw();
         this.draw();
 
         if (this.size - this.originalSize <= motionZ) {
@@ -96,7 +96,7 @@ Ball.prototype = {
             window.mGame.clearPlayground();
             window.mTarget.draw();
             window.mBoundaries.draw();
-            window.mBricks.draw();
+            window.mObstacles.draw();
             this.draw();
 
             var self = this;
@@ -113,7 +113,7 @@ Ball.prototype = {
                 return;
             }
             
-            if (CollisionManager.bricks(this.position.x, this.position.y)) {
+            if (CollisionManager.obstacles(this.position.x, this.position.y)) {
                 this.draw();
                 this.status = 'onabrick';
                 return;
@@ -163,7 +163,7 @@ Ball.prototype = {
         window.mGame.clearPlayground();
         window.mTarget.draw();
 //        window.mBoundaries.draw();
-//        window.mBricks.draw();
+//        window.mObstacles.draw();
         this.draw();
 
         /* Animate until the ball is visible */

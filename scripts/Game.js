@@ -34,7 +34,7 @@ Game.prototype = {
         /* Draw toy pieces */
         window.mBoundaries.init();
         this.generateTarget();
-        this.generateBricks();
+        this.generateObstacles();
         this.generateBall();
 
         /* Handle the screen orientation change */
@@ -104,7 +104,7 @@ Game.prototype = {
         }
 
         /* Check if the ball collides with a brick or boundaries  */
-        var collision = CollisionManager.bricks(nextPositionX, nextPositionY) || CollisionManager.boundaries(nextPositionX, nextPositionY);
+        var collision = CollisionManager.obstacles(nextPositionX, nextPositionY) || CollisionManager.boundaries(nextPositionX, nextPositionY);
         if (collision) {
             
             if (collision === 'left' || collision === 'right') {
@@ -173,16 +173,16 @@ Game.prototype = {
         this.playgroundContext.clearRect(0, 0, this.playground.width, this.playground.height);
     },
     /*
-     * generateBricks
-     * Draw bricks in random positions
+     * generateObstacles
+     * Draw obstacles in random positions
      */
-    generateBricks: function() {
-        window.mBricks.items = [];
+    generateObstacles: function() {
+        window.mObstacles.items = [];
 
         var numberOfVerticalWalls = 1 + (Math.random() * 2 * window.mBoundaries.width / 480);
         var numberOfHorizontalWalls = 1 + (Math.random() * 2 * window.mBoundaries.height / 320);
 
-        /* vertical positioned bricks */
+        /* vertical positioned obstacles */
         for (var i = 0; i < numberOfVerticalWalls; i++) {
             var width = 20;
             var height = (Math.random() - 0 + 1) * 100 * window.mBoundaries.height / 320;
@@ -195,7 +195,7 @@ Game.prototype = {
             var leftMin = window.mBoundaries.left - 0 + window.mBall.size;
             var left = (Math.random() * (leftMax - leftMin)) - 0 + leftMin;
 
-            window.mBricks.items.push({
+            window.mObstacles.items.push({
                 top: top,
                 left: left,
                 width: width,
@@ -203,7 +203,7 @@ Game.prototype = {
             });
         }
 
-        /* horizontal positioned bricks */
+        /* horizontal positioned obstacles */
         for (var i = 0; i < numberOfHorizontalWalls; i++) {
             var width = (Math.random() - 0 + 1) * 100 * window.mBoundaries.width / 480;
             var height = 20;
@@ -216,7 +216,7 @@ Game.prototype = {
             var leftMin = window.mBoundaries.left - 0 + window.mBall.size;
             var left = (Math.random() * (leftMax - leftMin)) - 0 + leftMin;
 
-            window.mBricks.items.push({
+            window.mObstacles.items.push({
                 top: top,
                 left: left,
                 width: width,
@@ -224,7 +224,7 @@ Game.prototype = {
             });
         }
 
-        window.mBricks.draw();
+        window.mObstacles.draw();
     },
     /*
      * generateTarget
@@ -243,7 +243,7 @@ Game.prototype = {
             xPos = (Math.random() * (leftMax - leftMin)) - 0 + leftMin;
             yPos = (Math.random() * (topMax - topMin)) - 0 + topMin;
         }
-        while (CollisionManager.bricks(xPos, yPos) || CollisionManager.boundaries(xPos, yPos));
+        while (CollisionManager.obstacles(xPos, yPos) || CollisionManager.boundaries(xPos, yPos));
 
         window.mTarget.position.x = xPos;
         window.mTarget.position.y = yPos;
@@ -268,7 +268,7 @@ Game.prototype = {
             xPos = (Math.random() * (leftMax - leftMin)) - 0 + leftMin;
             yPos = (Math.random() * (topMax - topMin)) - 0 + topMin;
         }
-        while (CollisionManager.bricks(xPos, yPos) || CollisionManager.boundaries(xPos, yPos)
+        while (CollisionManager.obstacles(xPos, yPos) || CollisionManager.boundaries(xPos, yPos)
                 || CollisionManager.target(xPos, yPos));
 
         window.mBall.position.x = xPos;

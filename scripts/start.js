@@ -4,11 +4,11 @@ function init() {
     /* Create a new Game */
     window.mGame = new Game();
 
-    /* Create new Boundaries and Bricks */
+    /* Create new Boundaries and Obstacles */
     window.mBoundaries = new Boundaries({
         margin: 10        
     });
-    window.mBricks = new Bricks();
+    window.mObstacles = new Obstacles();
 
     /* Create a new Target */
     window.mTarget = new Target({

@@ -48,22 +48,22 @@ var CollisionManager = {
         return false;
     },
     /*
-     * bricks
+     * obstacles
      * Check whether the ball should crash against a brick
      * @param {Double} x
      * @param {Double} y
      * @returns {String} collision direction
      */
-    bricks: function(x, y) {
+    obstacles: function(x, y) {
         
-        var bricks = window.mBricks.items;
+        var obstacles = window.mObstacles.items;
         
-        for (var i = 0; i < bricks.length; i++) {
+        for (var i = 0; i < obstacles.length; i++) {
 
-            var leftCollision = bricks[i].left - (window.mBall.size / 2);
-            var topCollision = bricks[i].top - 0 - (window.mBall.size / 2);
-            var rightCollision = bricks[i].left - 0 + bricks[i].width - 0 + (window.mBall.size / 2);
-            var bottomCollision = bricks[i].top - 0 + bricks[i].height - 0 + (window.mBall.size / 2);
+            var leftCollision = obstacles[i].left - (window.mBall.size / 2);
+            var topCollision = obstacles[i].top - 0 - (window.mBall.size / 2);
+            var rightCollision = obstacles[i].left - 0 + obstacles[i].width - 0 + (window.mBall.size / 2);
+            var bottomCollision = obstacles[i].top - 0 + obstacles[i].height - 0 + (window.mBall.size / 2);
 
             var collisions = [Math.abs(leftCollision - x), Math.abs(topCollision - y), Math.abs(rightCollision - x), Math.abs(bottomCollision - y)];
 
