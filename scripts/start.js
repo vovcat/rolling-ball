@@ -26,7 +26,7 @@ function init() {
 
     /* Lock screen orientation to portrait */
     window.mScreenOrientationManager = new ScreenOrientationManager();
-    window.mScreenOrientationManager.lockOrientation('portrait-primary');
+    window.mScreenOrientationManager.lockOrientation('landscape-primary');
 
     /* Add devicemotion control */
     window.mDeviceMotionControl = new DeviceMotionControl();

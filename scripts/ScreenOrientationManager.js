@@ -87,9 +87,9 @@ ScreenOrientationManager.prototype = {
                 }
             }
         }
-        else { // portrait-primary
-            if (callbacks.portraitPrimaryCallback) {
-                callbacks.portraitPrimaryCallback();
+        else { // landscape-primary
+            if (callbacks.landscapePrimaryCallback) {
+                callbacks.landscapePrimaryCallback();
             }
         }
     },
@@ -101,13 +101,27 @@ ScreenOrientationManager.prototype = {
     handleOrientationChange: function(callbacks) {
         var self = this;
 
-        /* if the OrientationChangeEvent is supported */
-        if (window.onorientationchange) {
+        /* if the OrientationChangeEvent is supported in screen */
+        if ('onorientationchange' in screen || 'onmozorientationchange' in window) {
 
+            /* Invoke handleOrientation on orientation change */
+            screen.onorientationchange = function() {
+
+                setTimeout(function() {
+                    self.handleOrientation(callbacks);
+                }, 500);
+
+            };
+        }
+        /* if the OrientationChangeEvent is supported in window */
+        else if ('onorientationchange' in window) {
+            
             /* Invoke handleOrientation on orientation change */
             window.onorientationchange = function() {
 
-                self.handleOrientation(callbacks);
+                setTimeout(function() {
+                    self.handleOrientation(callbacks);
+                }, 500);
 
             };
         }
@@ -116,7 +130,9 @@ ScreenOrientationManager.prototype = {
             /* Invoke handleOrientation on window resize */
             window.onresize = function() {
 
-                self.handleOrientation(callbacks);
+                setTimeout(function() {
+                    self.handleOrientation(callbacks);
+                }, 500);
 
             };
         }
