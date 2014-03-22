@@ -87,9 +87,9 @@ ScreenOrientationManager.prototype = {
                 }
             }
         }
-        else { // landscape-primary
-            if (callbacks.landscapePrimaryCallback) {
-                callbacks.landscapePrimaryCallback();
+        else { // portrait-primary
+            if (callbacks.portraitPrimaryCallback) {
+                callbacks.portraitPrimaryCallback();
             }
         }
     },
