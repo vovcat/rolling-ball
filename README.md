@@ -17,7 +17,7 @@ This demo is part of [this MDN page](https://developer.mozilla.org/en-US/Apps/Bu
 
 ## Contributing
 
-- landscape support
+- lock screen to landscape
 - levels
 - better look&feel
 - better playability
