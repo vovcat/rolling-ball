@@ -18,6 +18,7 @@ This demo is part of [this MDN page](https://developer.mozilla.org/en-US/Apps/Bu
 ## Contributing
 
 - lock screen to landscape
+- make the ball roll via deviceorientation event
 - levels
 - better look&feel
 - better playability
