@@ -39,10 +39,10 @@ Game.prototype = {
 
         /* Handle the screen orientation change */
         window.mScreenOrientationManager.handleOrientationChange({
-            portraitPrimaryCallback: window.mGame.start.bind(window.mGame),
-            landscapePrimaryCallback: window.mGame.start.bind(window.mGame),
-            portraitSecondaryCallback: window.mGame.start.bind(window.mGame),
-            landscapeSecondaryCallback: window.mGame.start.bind(window.mGame)
+            portraitPrimaryCallback: window.mGame.resume.bind(window.mGame),
+            landscapePrimaryCallback: window.mGame.pause.bind(window.mGame),
+            portraitSecondaryCallback: window.mGame.pause.bind(window.mGame),
+            landscapeSecondaryCallback: window.mGame.pause.bind(window.mGame)
         });
 
         /* Activate the device motion control */
@@ -143,6 +143,20 @@ Game.prototype = {
             this.lastMotionY = motionY;
         }
 
+    },
+    /*
+     * pause
+     * Pause the game
+     */
+    pause: function() {
+        this.status = 'paused';
+    },
+    /*
+     * resume
+     * Resume the game
+     */
+    resume: function() {
+        this.status = 'running';
     },
     /*
      * stop
