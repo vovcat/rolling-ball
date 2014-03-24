@@ -60,7 +60,7 @@ Game.prototype = {
      * @param {Integer} interval
      */
     step: function(motionX, motionY, motionZ, interval) {
-        
+
         var self = this;
 
         /* Stop if the game is not running */
@@ -106,7 +106,7 @@ Game.prototype = {
         /* Check if the ball collides with a brick or boundaries  */
         var collision = CollisionManager.obstacles(nextPositionX, nextPositionY) || CollisionManager.boundaries(nextPositionX, nextPositionY);
         if (collision) {
-            
+
             if (collision === 'left' || collision === 'right') {
                 if ((motionX < 0 && this.lastMotionX < 0) || (motionX > 0 && this.lastMotionX > 0)) {
                     motionX = 0;
@@ -156,7 +156,10 @@ Game.prototype = {
      * Resume the game
      */
     resume: function() {
-        this.status = 'running';
+        var self = this;
+        setTimeout(function() {
+            self.status = 'running';
+        }, 1000);
     },
     /*
      * stop
@@ -249,10 +252,10 @@ Game.prototype = {
 
         var leftMax = window.mBoundaries.left - 0 + (window.mBoundaries.width / 2) - window.mTarget.size;
         var leftMin = window.mBoundaries.left - 0 + window.mTarget.size;
-        
+
         var topMax = window.mBoundaries.top - 0 + (window.mBoundaries.height / 2) - window.mTarget.size;
         var topMin = window.mBoundaries.top - 0 + window.mTarget.size;
-                
+
         do {
             xPos = (Math.random() * (leftMax - leftMin)) - 0 + leftMin;
             yPos = (Math.random() * (topMax - topMin)) - 0 + topMin;
@@ -274,10 +277,10 @@ Game.prototype = {
 
         var leftMax = window.mBoundaries.left - 0 + window.mBoundaries.width - window.mBall.size;
         var leftMin = window.mBoundaries.left - 0 + (window.mBoundaries.width / 2);
-        
+
         var topMax = window.mBoundaries.top - 0 + window.mBoundaries.height - window.mBall.size;
         var topMin = window.mBoundaries.top - 0 + (window.mBoundaries.height / 2);
-                
+
         do {
             xPos = (Math.random() * (leftMax - leftMin)) - 0 + leftMin;
             yPos = (Math.random() * (topMax - topMin)) - 0 + topMin;
