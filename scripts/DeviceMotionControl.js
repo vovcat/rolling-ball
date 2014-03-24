@@ -59,7 +59,7 @@ DeviceMotionControl.prototype = {
                 /* Get the interval (ms) at which data is obtained from the underlying hardware */
                 var interval = deviceMotionEvent.interval;
                 
-                /* Handle the screen orientation change */
+                /* Handle the screen orientation */
                 window.mScreenOrientationManager.handleOrientation({
                     portraitPrimaryCallback: function() {
                         callback(-x, y, z, interval);
