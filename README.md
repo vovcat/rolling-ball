@@ -9,18 +9,21 @@ Try it [live](http://goo.gl/NUfKQi):
 - keyboard control: use arrows to make the ball roll, and space to make it jump
 - device motion control: change the orientation of your mobile device to make the ball roll, and move it up to make the ball jump
 
+This demo is part of the following article on Mozilla Developer Network:
+
+- [Keep it level: responding to device orientation changes - MDN App Center](https://developer.mozilla.org/en-US/Apps/Build/gather_and_modify_data/Keep_it_level_responding_to_device_orientation_changes)
+
 ## Notes
 
-The web app makes use of canvas to draw graphics and the Device Orientation API to move the ball.
-
-This demo is part of [this MDN page](https://developer.mozilla.org/en-US/Apps/Build/gather_and_modify_data/Keep_it_level_responding_to_device_orientation_changes) that explains how to use the Device Orientation API in a Open Web App.
+The web app makes use of canvas to draw graphics and the Device Orientation API to move the ball. More info inside the MDN article.
 
 ## Contributing
 
-- lock screen to landscape
-- make the ball roll via deviceorientation event
+- open github issues
+- add tests
 - levels
 - better look&feel
 - better playability
-- add tests
-- open github issues
+- lock screen to landscape
+- make the ball roll via deviceorientation event
+- DOM-based version, instead of canvas-based
