@@ -1,27 +1,30 @@
-function Ball(settings) {
-    this.originalSize = settings.size;
-    this.size = settings.size;
-    this.status = 'rolling'; // rolling, jumping, crashing, onabrick, falling
-    this.position = {
-        x: settings.xPos,
-        y: settings.yPos
-    };
+var Ball = {
+    /* 
+     * init
+     * Initialize the object
+     */
+    init: function(settings) {
+        this.originalSize = settings.size;
+        this.size = settings.size;
+        this.status = 'rolling'; // rolling, jumping, crashing, onabrick, falling
+        this.position = {
+            x: settings.xPos,
+            y: settings.yPos
+        };
 
-    /* Draw the ball */
-    this.draw();
-}
-
-Ball.prototype = {
+        /* Draw the ball */
+        this.draw();
+    },
     /*
      * draw
      * Draw the ball
      */
     draw: function() {
-        window.mGame.playgroundContext.fillStyle = '#66CC00';
-        window.mGame.playgroundContext.beginPath();
-        window.mGame.playgroundContext.arc(this.position.x, this.position.y, this.size / 2, 0, 2 * Math.PI);
-        window.mGame.playgroundContext.closePath();
-        window.mGame.playgroundContext.fill();
+        Game.playgroundContext.fillStyle = '#66CC00';
+        Game.playgroundContext.beginPath();
+        Game.playgroundContext.arc(this.position.x, this.position.y, this.size / 2, 0, 2 * Math.PI);
+        Game.playgroundContext.closePath();
+        Game.playgroundContext.fill();
     },
     /*
      * roll
@@ -32,11 +35,11 @@ Ball.prototype = {
         this.position.y += motionY;
         this.position.x += motionX;
 
-        window.mGame.clearPlayground();
-        window.mTarget.draw();
+        Game.clearPlayground();
+        Target.draw();
         this.draw();
-        window.mBoundaries.draw();
-        window.mObstacles.draw();
+        Boundaries.draw();
+        Obstacles.draw();
     },
     /*
      * jump
@@ -57,10 +60,10 @@ Ball.prototype = {
         this.position.y += motionY;
         this.position.x -= motionX;
 
-        window.mGame.clearPlayground();
-        window.mTarget.draw();
-        window.mBoundaries.draw();
-        window.mObstacles.draw();
+        Game.clearPlayground();
+        Target.draw();
+        Boundaries.draw();
+        Obstacles.draw();
         this.draw();
 
         if (this.size - this.originalSize <= motionZ) {
@@ -93,10 +96,10 @@ Ball.prototype = {
                 this.position.x -= motionX;
             }
 
-            window.mGame.clearPlayground();
-            window.mTarget.draw();
-            window.mBoundaries.draw();
-            window.mObstacles.draw();
+            Game.clearPlayground();
+            Target.draw();
+            Boundaries.draw();
+            Obstacles.draw();
             this.draw();
 
             var self = this;
@@ -106,19 +109,19 @@ Ball.prototype = {
         }
         else {
             this.size = this.originalSize;
-                        
+
             if (CollisionManager.target(this.position.x, this.position.y)) {
-                window.mGame.stop();
-                window.mGame.nextLevel();
+                Game.stop();
+                Game.nextLevel();
                 return;
             }
-            
+
             if (CollisionManager.obstacles(this.position.x, this.position.y)) {
                 this.draw();
                 this.status = 'onabrick';
                 return;
-            }            
-            
+            }
+
             this.status = 'rolling';
         }
     },
@@ -130,16 +133,16 @@ Ball.prototype = {
         this.status = 'crashing';
 
         if (outofboundaries === 'left') {
-            this.position.x = window.mBoundaries.left - 0 + (this.originalSize / 2);
+            this.position.x = Boundaries.left - 0 + (this.originalSize / 2);
         }
         else if (outofboundaries === 'top') {
-            this.position.y = window.mBoundaries.top - 0 + (this.originalSize / 2);
+            this.position.y = Boundaries.top - 0 + (this.originalSize / 2);
         }
         else if (outofboundaries === 'right') {
-            this.position.x = window.mBoundaries.top - 0 + window.mBoundaries.width - (this.originalSize / 2);
+            this.position.x = Boundaries.top - 0 + Boundaries.width - (this.originalSize / 2);
         }
         else if (outofboundaries === 'bottom') {
-            this.position.y = window.mBoundaries.left - 0 + window.mBoundaries.height - (this.originalSize / 2);
+            this.position.y = Boundaries.left - 0 + Boundaries.height - (this.originalSize / 2);
         }
 
         this.draw();
@@ -151,7 +154,7 @@ Ball.prototype = {
     fall: function(x, y) {
         /* Update ball status */
         this.status = 'falling';
-        
+
         /* Update ball position */
         this.position.x = x;
         this.position.y = y;
@@ -160,10 +163,10 @@ Ball.prototype = {
         this.size -= 1;
 
         /* Repaint */
-        window.mGame.clearPlayground();
-        window.mTarget.draw();
-//        window.mBoundaries.draw();
-//        window.mObstacles.draw();
+        Game.clearPlayground();
+        Target.draw();
+//        Boundaries.draw();
+//        Obstacles.draw();
         this.draw();
 
         /* Animate until the ball is visible */

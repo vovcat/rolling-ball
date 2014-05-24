@@ -1,21 +1,18 @@
-function Boundaries(settings) {
-    this.margin = settings.margin;
-
-    /* Initialize the boundaries */
-    this.init();
-}
-
-Boundaries.prototype = {
-    /*
+var Boundaries = {
+    /* 
      * init
-     * Initialize the boundaries
+     * Initialize the object
      */
-    init: function() {
+    init: function(settings) {
+        if (settings) {
+            this.margin = settings.margin;
+        }
+        
         this.top = this.margin;
         this.left = this.margin;
-        this.width = window.mGame.playground.width - (2 * this.margin);
-        this.height = window.mGame.playground.height - (2 * this.margin);
-        
+        this.width = Game.playground.width - (2 * this.margin);
+        this.height = Game.playground.height - (2 * this.margin);
+
         this.draw();
     },
     /*
@@ -23,10 +20,10 @@ Boundaries.prototype = {
      * Draw the boundaries
      */
     draw: function() {
-        window.mGame.playgroundContext.strokeStyle = '#000000';
-        window.mGame.playgroundContext.beginPath();
-        window.mGame.playgroundContext.rect(this.left, this.top, this.width, this.height);
-        window.mGame.playgroundContext.closePath();
-        window.mGame.playgroundContext.stroke();
+        Game.playgroundContext.strokeStyle = '#000000';
+        Game.playgroundContext.beginPath();
+        Game.playgroundContext.rect(this.left, this.top, this.width, this.height);
+        Game.playgroundContext.closePath();
+        Game.playgroundContext.stroke();
     }
 };

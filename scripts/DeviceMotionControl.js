@@ -4,10 +4,14 @@
  * http://www.w3.org/TR/orientation-event/
  */
 
-function DeviceMotionControl() {
-}
-
-DeviceMotionControl.prototype = {
+var DeviceMotionControl = {
+    /* 
+     * init
+     * Initialize the object
+     */
+    init: function() {
+        
+    },
     /*
      * isDeviceMotionEventSupported
      * Check if the devicemotion event is supported
@@ -60,7 +64,7 @@ DeviceMotionControl.prototype = {
                 var interval = deviceMotionEvent.interval;
                 
                 /* Handle the screen orientation */
-                window.mScreenOrientationManager.handleOrientation({
+                ScreenOrientationManager.handleOrientation({
                     portraitPrimaryCallback: function() {
                         callback(-x, y, z, interval);
                     },

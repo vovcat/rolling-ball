@@ -1,95 +1,98 @@
-function KeyboardControl() {
-
-    this.interval = 1000;
-    this.vx = 0;
-    this.vy = 0;
-    this.vz = 0;
-
-    this.leftArrow = {
-        keycode: 37,
-        steps: 0,
-        lastTimePressed: null
-    };
-
-    this.upArrow = {
-        keycode: 38,
-        steps: 0,
-        lastTimePressed: null
-    };
-
-    this.rightArrow = {
-        keycode: 39,
-        steps: 0,
-        lastTimePressed: null
-    };
-
-    this.downArrow = {
-        keycode: 40,
-        steps: 0,
-        lastTimePressed: null
-    };
-
-    this.jumpButton = {
-        keycode: 32,
-        steps: 0,
-        lastTimePressed: null
-    };
-
-    var self = this;
-
-    /*
-     * Listen to the keydown event
+var KeyboardControl = {
+    /* 
+     * init
+     * Initialize the object
      */
-    window.onkeydown = function(e) {
-        self.vx = 0;
-        self.vy = 0;
-        self.vz = 0;
+    init: function() {
 
-        if (window.mBall.status !== 'jumping') {
+        this.interval = 1000;
+        this.vx = 0;
+        this.vy = 0;
+        this.vz = 0;
+
+        this.leftArrow = {
+            keycode: 37,
+            steps: 0,
+            lastTimePressed: null
+        };
+
+        this.upArrow = {
+            keycode: 38,
+            steps: 0,
+            lastTimePressed: null
+        };
+
+        this.rightArrow = {
+            keycode: 39,
+            steps: 0,
+            lastTimePressed: null
+        };
+
+        this.downArrow = {
+            keycode: 40,
+            steps: 0,
+            lastTimePressed: null
+        };
+
+        this.jumpButton = {
+            keycode: 32,
+            steps: 0,
+            lastTimePressed: null
+        };
+
+        var self = this;
+
+        /*
+         * Listen to the keydown event
+         */
+        window.onkeydown = function(e) {
+            self.vx = 0;
+            self.vy = 0;
+            self.vz = 0;
+
+            if (Ball.status !== 'jumping') {
+                if (e.keyCode === self.leftArrow.keycode) { // left
+                    self.goLeft();
+                }
+                else if (e.keyCode === self.upArrow.keycode) { // up
+                    self.goUp();
+                }
+                else if (e.keyCode === self.rightArrow.keycode) { // right
+                    self.goRight();
+                }
+                else if (e.keyCode === self.downArrow.keycode) { // down
+                    self.goDown();
+                }
+
+                if (e.keyCode === self.jumpButton.keycode) { // space
+                    self.jump();
+                }
+            }
+
+        };
+
+        /*
+         * Listen to the keyup event
+         */
+        window.onkeyup = function(e) {
             if (e.keyCode === self.leftArrow.keycode) { // left
-                self.goLeft();
+                self.leftArrow.lastTimePressed = null;
+                self.leftArrow.steps = 0;
             }
             else if (e.keyCode === self.upArrow.keycode) { // up
-                self.goUp();
+                self.upArrow.lastTimePressed = null;
+                self.upArrow.steps = 0;
             }
             else if (e.keyCode === self.rightArrow.keycode) { // right
-                self.goRight();
+                self.rightArrow.lastTimePressed = null;
+                self.rightArrow.steps = 0;
             }
             else if (e.keyCode === self.downArrow.keycode) { // down
-                self.goDown();
+                self.downArrow.lastTimePressed = null;
+                self.downArrow.steps = 0;
             }
-
-            if (e.keyCode === self.jumpButton.keycode) { // space
-                self.jump();
-            }
-        }
-
-    };
-
-    /*
-     * Listen to the keyup event
-     */
-    window.onkeyup = function(e) {
-        if (e.keyCode === self.leftArrow.keycode) { // left
-            self.leftArrow.lastTimePressed = null;
-            self.leftArrow.steps = 0;
-        }
-        else if (e.keyCode === self.upArrow.keycode) { // up
-            self.upArrow.lastTimePressed = null;
-            self.upArrow.steps = 0;
-        }
-        else if (e.keyCode === self.rightArrow.keycode) { // right
-            self.rightArrow.lastTimePressed = null;
-            self.rightArrow.steps = 0;
-        }
-        else if (e.keyCode === self.downArrow.keycode) { // down
-            self.downArrow.lastTimePressed = null;
-            self.downArrow.steps = 0;
-        }
-    };
-}
-
-KeyboardControl.prototype = {
+        };
+    },
     /*
      * goLeft
      * Make the ball go left
@@ -120,7 +123,7 @@ KeyboardControl.prototype = {
             }
         }
 
-        window.mGame.step(this.vx, this.vy, this.vz, this.interval);
+        Game.step(this.vx, this.vy, this.vz, this.interval);
     },
     /*
      * goUp
@@ -151,7 +154,7 @@ KeyboardControl.prototype = {
             }
         }
 
-        window.mGame.step(this.vx, this.vy, this.vz, this.interval);
+        Game.step(this.vx, this.vy, this.vz, this.interval);
     },
     /*
      * goRight
@@ -182,7 +185,7 @@ KeyboardControl.prototype = {
             }
         }
 
-        window.mGame.step(this.vx, this.vy, this.vz, this.interval);
+        Game.step(this.vx, this.vy, this.vz, this.interval);
     },
     /*
      * goDown
@@ -213,7 +216,7 @@ KeyboardControl.prototype = {
             }
         }
 
-        window.mGame.step(this.vx, this.vy, this.vz, this.interval);
+        Game.step(this.vx, this.vy, this.vz, this.interval);
     },
     /*
      * jump
@@ -239,6 +242,6 @@ KeyboardControl.prototype = {
             this.vz += this.downArrow.steps;
         }
 
-        window.mGame.step(this.vx, this.vy, this.vz, this.interval);
+        Game.step(this.vx, this.vy, this.vz, this.interval);
     }
 };

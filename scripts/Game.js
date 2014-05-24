@@ -1,25 +1,28 @@
 
-function Game() {
-    this.status = 'stopped';
-    this.level = 1;
-    this.speed = 1;
+var Game = {
+    /* 
+     * init
+     * Initialize the object
+     */
+    init: function() {
+        this.status = 'stopped';
+        this.level = 1;
+        this.speed = 1;
 
-    this.playground = document.getElementById("playground");
-    this.playground.setAttribute('width', window.innerWidth - 5);
-    this.playground.setAttribute('height', window.innerHeight - 5);
+        this.playground = document.getElementById("playground");
+        this.playground.setAttribute('width', window.innerWidth - 5);
+        this.playground.setAttribute('height', window.innerHeight - 5);
 
-    this.playgroundContext = this.playground.getContext("2d");
+        this.playgroundContext = this.playground.getContext("2d");
 
-    this.lastMotionX = 0;
-    this.lastMotionY = 0;
+        this.lastMotionX = 0;
+        this.lastMotionY = 0;
 
-    /* Initialize window.requestAnimationFrame taking into account vendor prefixes */
-    window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
-            window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+        /* Initialize window.requestAnimationFrame taking into account vendor prefixes */
+        window.requestAnimationFrame = window.requestAnimationFrame || ozRequestAnimationFrame ||
+                window.webkitRequestAnimationFrame || sRequestAnimationFrame;
 
-}
-
-Game.prototype = {
+    },
     /*
      * start
      * Starts the level
@@ -32,21 +35,21 @@ Game.prototype = {
         this.playground.setAttribute('height', window.innerHeight - 5);
 
         /* Draw toy pieces */
-        window.mBoundaries.init();
+        Boundaries.init();
         this.generateTarget();
         this.generateObstacles();
         this.generateBall();
 
         /* Handle the screen orientation change */
-        window.mScreenOrientationManager.handleOrientationChange({
-            portraitPrimaryCallback: window.mGame.resume.bind(window.mGame),
-            landscapePrimaryCallback: window.mGame.pause.bind(window.mGame),
-            portraitSecondaryCallback: window.mGame.pause.bind(window.mGame),
-            landscapeSecondaryCallback: window.mGame.pause.bind(window.mGame)
+        ScreenOrientationManager.handleOrientationChange({
+            portraitPrimaryCallback: Game.resume.bind(Game),
+            landscapePrimaryCallback: Game.pause.bind(Game),
+            portraitSecondaryCallback: Game.pause.bind(Game),
+            landscapeSecondaryCallback: Game.pause.bind(Game)
         });
 
         /* Activate the device motion control */
-        window.mDeviceMotionControl.handleMotionEvent(window.mGame.step.bind(window.mGame));
+        DeviceMotionControl.handleMotionEvent(Game.step.bind(Game));
 
         /* The game is running now */
         this.status = 'running';
@@ -81,19 +84,19 @@ Game.prototype = {
             }
 
             /* Make the ball jump */
-            window.mBall.jump(jumpX, jumpY, motionZ);
+            Ball.jump(jumpX, jumpY, motionZ);
 
             return;
         }
 
         /* Stop if ball is not rolling */
-        if (window.mBall.status !== 'rolling') {
+        if (Ball.status !== 'rolling') {
             return;
         }
 
         /* Calculate the next position of the ball */
-        var nextPositionX = window.mBall.position.x - 0 + motionX;
-        var nextPositionY = window.mBall.position.y - 0 + motionY;
+        var nextPositionX = Ball.position.x - 0 + motionX;
+        var nextPositionY = Ball.position.y - 0 + motionY;
 
         /* Check if the ball reached the target */
         if (CollisionManager.target(nextPositionX, nextPositionY)) {
@@ -133,7 +136,7 @@ Game.prototype = {
             this.speed = interval / 100;
         }
 
-        window.mBall.roll(motionX, motionY);
+        Ball.roll(motionX, motionY);
 
         /* Save last motion */
         if (motionX !== 0) {
@@ -173,7 +176,7 @@ Game.prototype = {
      * Go to the next level
      */
     nextLevel: function() {
-        window.mBall.fall(window.mTarget.position.x, window.mTarget.position.y);
+        Ball.fall(Target.position.x, Target.position.y);
 
         var self = this;
         window.setTimeout(function() {
@@ -194,25 +197,25 @@ Game.prototype = {
      * Draw obstacles in random positions
      */
     generateObstacles: function() {
-        window.mObstacles.items = [];
+        Obstacles.items = [];
 
-        var numberOfVerticalWalls = 1 + (Math.random() * 2 * window.mBoundaries.width / 480);
-        var numberOfHorizontalWalls = 1 + (Math.random() * 2 * window.mBoundaries.height / 320);
+        var numberOfVerticalWalls = 1 + (Math.random() * 2 * Boundaries.width / 480);
+        var numberOfHorizontalWalls = 1 + (Math.random() * 2 * Boundaries.height / 320);
 
         /* vertical positioned obstacles */
         for (var i = 0; i < numberOfVerticalWalls; i++) {
             var width = 20;
-            var height = (Math.random() - 0 + 1) * 100 * window.mBoundaries.height / 320;
+            var height = (Math.random() - 0 + 1) * 100 * Boundaries.height / 320;
 
-            var topMax = window.mBoundaries.height - height + window.mBoundaries.top - window.mTarget.size;
-            var topMin = window.mBoundaries.top - 0 + window.mTarget.size;
+            var topMax = Boundaries.height - height + Boundaries.top - Target.size;
+            var topMin = Boundaries.top - 0 + Target.size;
             var top = (Math.random() * (topMax - topMin)) - 0 + topMin;
 
-            var leftMax = window.mBoundaries.width - width + window.mBoundaries.left - window.mBall.size;
-            var leftMin = window.mBoundaries.left - 0 + window.mBall.size;
+            var leftMax = Boundaries.width - width + Boundaries.left - Ball.size;
+            var leftMin = Boundaries.left - 0 + Ball.size;
             var left = (Math.random() * (leftMax - leftMin)) - 0 + leftMin;
 
-            window.mObstacles.items.push({
+            Obstacles.items.push({
                 top: top,
                 left: left,
                 width: width,
@@ -222,18 +225,18 @@ Game.prototype = {
 
         /* horizontal positioned obstacles */
         for (var i = 0; i < numberOfHorizontalWalls; i++) {
-            var width = (Math.random() - 0 + 1) * 100 * window.mBoundaries.width / 480;
+            var width = (Math.random() - 0 + 1) * 100 * Boundaries.width / 480;
             var height = 20;
 
-            var topMax = window.mBoundaries.height - height + window.mBoundaries.top - window.mTarget.size;
-            var topMin = window.mBoundaries.top - 0 + window.mTarget.size;
+            var topMax = Boundaries.height - height + Boundaries.top - Target.size;
+            var topMin = Boundaries.top - 0 + Target.size;
             var top = (Math.random() * (topMax - topMin)) - 0 + topMin;
 
-            var leftMax = window.mBoundaries.width - width + window.mBoundaries.left - window.mBall.size;
-            var leftMin = window.mBoundaries.left - 0 + window.mBall.size;
+            var leftMax = Boundaries.width - width + Boundaries.left - Ball.size;
+            var leftMin = Boundaries.left - 0 + Ball.size;
             var left = (Math.random() * (leftMax - leftMin)) - 0 + leftMin;
 
-            window.mObstacles.items.push({
+            Obstacles.items.push({
                 top: top,
                 left: left,
                 width: width,
@@ -241,7 +244,7 @@ Game.prototype = {
             });
         }
 
-        window.mObstacles.draw();
+        Obstacles.draw();
     },
     /*
      * generateTarget
@@ -250,11 +253,11 @@ Game.prototype = {
     generateTarget: function() {
         var xPos, yPos;
 
-        var leftMax = window.mBoundaries.left - 0 + (window.mBoundaries.width / 2) - window.mTarget.size;
-        var leftMin = window.mBoundaries.left - 0 + window.mTarget.size;
+        var leftMax = Boundaries.left - 0 + (Boundaries.width / 2) - Target.size;
+        var leftMin = Boundaries.left - 0 + Target.size;
 
-        var topMax = window.mBoundaries.top - 0 + (window.mBoundaries.height / 2) - window.mTarget.size;
-        var topMin = window.mBoundaries.top - 0 + window.mTarget.size;
+        var topMax = Boundaries.top - 0 + (Boundaries.height / 2) - Target.size;
+        var topMin = Boundaries.top - 0 + Target.size;
 
         do {
             xPos = (Math.random() * (leftMax - leftMin)) - 0 + leftMin;
@@ -262,24 +265,24 @@ Game.prototype = {
         }
         while (CollisionManager.obstacles(xPos, yPos) || CollisionManager.boundaries(xPos, yPos));
 
-        window.mTarget.position.x = xPos;
-        window.mTarget.position.y = yPos;
-        window.mTarget.draw();
+        Target.position.x = xPos;
+        Target.position.y = yPos;
+        Target.draw();
     },
     /*
      * generateBall
      * Draw the ball in a random position
      */
     generateBall: function() {
-        window.mBall.size = window.mBall.originalSize;
+        Ball.size = Ball.originalSize;
 
         var xPos, yPos;
 
-        var leftMax = window.mBoundaries.left - 0 + window.mBoundaries.width - window.mBall.size;
-        var leftMin = window.mBoundaries.left - 0 + (window.mBoundaries.width / 2);
+        var leftMax = Boundaries.left - 0 + Boundaries.width - Ball.size;
+        var leftMin = Boundaries.left - 0 + (Boundaries.width / 2);
 
-        var topMax = window.mBoundaries.top - 0 + window.mBoundaries.height - window.mBall.size;
-        var topMin = window.mBoundaries.top - 0 + (window.mBoundaries.height / 2);
+        var topMax = Boundaries.top - 0 + Boundaries.height - Ball.size;
+        var topMin = Boundaries.top - 0 + (Boundaries.height / 2);
 
         do {
             xPos = (Math.random() * (leftMax - leftMin)) - 0 + leftMin;
@@ -288,8 +291,8 @@ Game.prototype = {
         while (CollisionManager.obstacles(xPos, yPos) || CollisionManager.boundaries(xPos, yPos)
                 || CollisionManager.target(xPos, yPos));
 
-        window.mBall.position.x = xPos;
-        window.mBall.position.y = yPos;
-        window.mBall.draw();
+        Ball.position.x = xPos;
+        Ball.position.y = yPos;
+        Ball.draw();
     }
 };

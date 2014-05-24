@@ -1,4 +1,11 @@
 var CollisionManager = {
+    /* 
+     * init
+     * Initialize the object
+     */
+    init: function() {
+
+    },
     /*
      * target
      * Check whether the ball should fall into hole
@@ -8,8 +15,8 @@ var CollisionManager = {
      */
     target: function(x, y) {
 
-        if ((y <= window.mTarget.position.y + window.mBall.size && y >= window.mTarget.position.y - window.mBall.size)
-                && (x <= window.mTarget.position.x + window.mBall.size && x >= window.mTarget.position.x - window.mBall.size)) {
+        if ((y <= Target.position.y + Ball.size && y >= Target.position.y - Ball.size)
+                && (x <= Target.position.x + Ball.size && x >= Target.position.x - Ball.size)) {
 
             return true;
         }
@@ -27,17 +34,17 @@ var CollisionManager = {
         var ret = '';
 
         /* Boundaries */
-        if (y <= (window.mBoundaries.top - 0 + (window.mBall.size / 2))) {
+        if (y <= (Boundaries.top - 0 + (Ball.size / 2))) {
             ret += 'top';
         }
-        else if (y >= (window.mBoundaries.height - 0 + window.mBoundaries.margin - (window.mBall.size / 2))) {
+        else if (y >= (Boundaries.height - 0 + Boundaries.margin - (Ball.size / 2))) {
             ret += 'bottom';
         }
 
-        if (x <= (window.mBoundaries.left + (window.mBall.size / 2))) {
+        if (x <= (Boundaries.left + (Ball.size / 2))) {
             ret += 'left';
         }
-        else if (x >= (window.mBoundaries.width - 0 + window.mBoundaries.margin - (window.mBall.size / 2))) {
+        else if (x >= (Boundaries.width - 0 + Boundaries.margin - (Ball.size / 2))) {
             ret += 'right';
         }
 
@@ -55,15 +62,15 @@ var CollisionManager = {
      * @returns {String} collision direction
      */
     obstacles: function(x, y) {
-        
-        var obstacles = window.mObstacles.items;
-        
+
+        var obstacles = Obstacles.items;
+
         for (var i = 0; i < obstacles.length; i++) {
 
-            var leftCollision = obstacles[i].left - (window.mBall.size / 2);
-            var topCollision = obstacles[i].top - 0 - (window.mBall.size / 2);
-            var rightCollision = obstacles[i].left - 0 + obstacles[i].width - 0 + (window.mBall.size / 2);
-            var bottomCollision = obstacles[i].top - 0 + obstacles[i].height - 0 + (window.mBall.size / 2);
+            var leftCollision = obstacles[i].left - (Ball.size / 2);
+            var topCollision = obstacles[i].top - 0 - (Ball.size / 2);
+            var rightCollision = obstacles[i].left - 0 + obstacles[i].width - 0 + (Ball.size / 2);
+            var bottomCollision = obstacles[i].top - 0 + obstacles[i].height - 0 + (Ball.size / 2);
 
             var collisions = [Math.abs(leftCollision - x), Math.abs(topCollision - y), Math.abs(rightCollision - x), Math.abs(bottomCollision - y)];
 

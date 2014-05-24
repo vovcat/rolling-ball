@@ -4,16 +4,19 @@
  * http://www.w3.org/TR/screen-orientation/
  */
 
-function ScreenOrientationManager() {
+var ScreenOrientationManager = {
+    /* 
+     * init
+     * Initialize the object
+     */
+    init: function() {
 
-    /* Initialize screen properties taking into account vendor prefixes */
-    screen.orientation = screen.orientation || screen.mozOrientation || screen.msOrientation;
-    screen.lockOrientation = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
-    screen.unlockOrientation = screen.unlockOrientation || screen.mozUnlockOrientation || screen.msUnlockOrientation;
+        /* Initialize screen properties taking into account vendor prefixes */
+        screen.orientation = screen.orientation || screen.mozOrientation || screen.msOrientation;
+        screen.lockOrientation = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
+        screen.unlockOrientation = screen.unlockOrientation || screen.mozUnlockOrientation || screen.msUnlockOrientation;
 
-}
-
-ScreenOrientationManager.prototype = {
+    },
     /*
      * isScreenOrientationSupported
      * Check if window.orientation property is supported
@@ -115,7 +118,7 @@ ScreenOrientationManager.prototype = {
         }
         /* if the OrientationChangeEvent is supported in window */
         else if ('onorientationchange' in window) {
-            
+
             /* Invoke handleOrientation on orientation change */
             window.onorientationchange = function() {
 
