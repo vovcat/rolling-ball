@@ -5,7 +5,7 @@ var App = {
      * Initialize the app
      */
     init: function() {
-        /* Create a new Game */
+        /* Initialize the game */
         Game.init();
 
         /* Create new Boundaries and Obstacles */
